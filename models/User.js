@@ -1,13 +1,45 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
+const base64 = require('base-64');
 
-async function getAll() {
+async function getForumData() {
+    try {
+        const allData = await db.any(`
+            select * from forum
+        `)
+    
+        return allData;
+    } catch (error) {
+        return {
+            msg: 'forum db had an error'
+        }
+    }
+}
 
-    const allData = await db.one(`
-        select * from users
-    `);
+async function updateForumData({ postb64, tagb64, dateb64, timeb64 }) {
+    try {
+        console.log(base64.decode(dateb64));
 
-    return allData
+        const query = await db.one(`
+
+            insert into forum
+                (post, tag, date_posted, time_posted) 
+            values ($1, $2, $3, $4)
+
+            returning id, post, tag, date_posted, time_posted
+        `, [base64.decode(postb64), base64.decode(tagb64), base64.decode(dateb64), base64.decode(timeb64)]);
+
+        const returnData = await db.any(`
+            select * from forum
+        `);
+
+        return returnData;
+
+    } catch (error) {
+        return {
+            msg: 'some forum error occured!'
+        }
+    }
 }
 
 async function getUser(email) {
@@ -72,6 +104,7 @@ async function createUser({ first_name, last_name, email, password }) {
     try {
 
         const hash = bcrypt.hashSync(password, 10);
+        console.log(hash);
 
         const newUser = await db.one(`
             insert into users
@@ -142,17 +175,17 @@ async function updateToken(token, email) {
     }
 }
 
-async function updateNewsfeed({ post, where, whom, when, user_id }) {
+async function updateNewsfeed({ postb64, whereb64, whomb64, whenb64, user_id }) {
     try {
 
         const query = await db.one(`
 
             insert into newsfeed
-                (post, where_at, with_whom, timestamp_option, users_id)
+                (post, where_at, with_whom, timestamp_option, users_id) 
             values ($1, $2, $3, $4, $5)
 
             returning id, post, where_at, with_whom, timestamp_option, users_id
-        `, [post, where, whom, when, user_id]);
+        `, [base64.decode(postb64), base64.decode(whereb64), base64.decode(whomb64), base64.decode(whenb64), user_id]);
 
         const returnData = await db.any(`
 
@@ -194,7 +227,48 @@ async function removePost({ id, user_id }) {
     }
 }
 
-async function updateQuotebook({ type, quote, origin, significance, when_said, user_id }) {
+async function getAllUsers() {
+    try {
+        const allUsers = await db.any(`
+            select * from connections
+        `);
+
+        return allUsers;
+    } catch (error) {
+        return {
+            msg: 'User list failed!'
+        }
+    }
+}
+
+async function toggleFavorite({ id, favorite, user_id }) {
+    try {
+        const query = await db.none(`
+
+            update connections 
+                set favorite=$1
+            where id=$2
+
+        `, [favorite, id]);
+
+        const returnData = await db.any(`
+
+            select * from connections where users_id=$1
+
+        `, [user_id]);
+
+        returnData;
+
+        return returnData;
+
+    } catch (error) {
+        return {
+            msg: 'error adding favorite!'
+        }
+    }
+}
+
+async function updateQuotebook({ type, quoteb64, originb64, significanceb64, when_saidb64, user_id }) {
     try {
 
         const query = await db.one(`
@@ -204,7 +278,7 @@ async function updateQuotebook({ type, quote, origin, significance, when_said, u
             values ($1, $2, $3, $4, $5, $6)
 
             returning id, quote_type, quote, origin, significance, when_said, users_id
-        `, [type, quote, origin, significance, when_said, user_id]);
+        `, [type, base64.decode(quoteb64), base64.decode(originb64), base64.decode(significanceb64), base64.decode(when_saidb64), user_id]);
 
         const returnData = await db.any(`
 
@@ -246,9 +320,87 @@ async function removeQuote({ id, user_id }) {
     }
 }
 
+async function updateFreeWrite({ titleb64, type, listb64, moodb64, entryb64, tagsb64, user_id }) {
+    try {
+
+        const query = await db.one(`
+
+            insert into freewrite
+                (title, entry_type, list, mood, entry_block, tags, users_id)
+            values ($1, $2, $3, $4, $5, $6, $7)
+
+            returning id, title, entry_type, list, mood, entry_block, tags, users_id
+        `, [base64.decode(titleb64), type, base64.decode(listb64), base64.decode(moodb64), base64.decode(entryb64), base64.decode(tagsb64), user_id]);
+
+        const returnData = await db.any(`
+
+            select * from freewrite where users_id=$1
+
+        `, [user_id]);
+
+        return returnData;
+
+    } catch (error) {
+        return {
+            msg: 'some error!'
+        }
+    }
+}
+
+async function removeFreeWrite({ id, user_id }) {
+    try {
+
+        const query = await db.none(`
+
+            delete from freewrite where id=$1
+
+        `, [id]);
+
+        const returnData = await db.any(`
+
+            select * from freewrite where users_id=$1
+        
+        `, [user_id]);
+
+        return returnData;
+
+    } catch (error) {
+        console.log(error);
+        return {
+            msg: 'some error!'
+        }
+    }
+}
+
+async function removeSticky({ listb64, user_id }) {
+    try {
+
+        const query = await db.none(`
+
+            delete from freewrite where list=$1 and users_id=$2
+
+        `, [base64.decode(listb64), user_id]);
+
+        const returnData = await db.any(`
+
+            select * from freewrite where users_id=$1
+        
+        `, [user_id]);
+
+        return returnData;
+
+    } catch (error) {
+        console.log(error);
+        return {
+            msg: 'some error!'
+        }
+    }
+}
+
 module.exports = {
 
-    getAll,
+    getForumData,
+    updateForumData,
     getUser,
     getData,
     checkUser,
@@ -256,7 +408,12 @@ module.exports = {
     updateToken,
     updateNewsfeed,
     removePost,
+    getAllUsers,
+    toggleFavorite,
     updateQuotebook,
-    removeQuote
+    removeQuote,
+    updateFreeWrite,
+    removeFreeWrite,
+    removeSticky
 
 }

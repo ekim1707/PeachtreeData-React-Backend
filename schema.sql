@@ -1,3 +1,13 @@
+-- For Widowsite Project
+create table forum (
+    id serial primary key not null,
+    post text,
+    tag text,
+    date_posted date,
+    time_posted time
+);
+
+-- For PeachtreeData Project
 create table users (
    id serial primary key not null,
    first_name text not null,
@@ -18,7 +28,13 @@ create table newsfeed (
 
 create table connections (
     id serial primary key not null,
-    friends text,
+    first_name text not null,
+    last_name text not null,
+    email text unique not null,
+    city text not null,
+    state_residing text not null,
+    favorite boolean not null,
+    available boolean not null,
     users_id integer references users(id)
 );
 
@@ -40,7 +56,7 @@ create table places (
 create table quotebook (
     id serial primary key not null,
     quote_type text,
-    quote text,
+    quote varchar,
     origin text,
     significance text,
     when_said text,
@@ -49,7 +65,11 @@ create table quotebook (
 
 create table freewrite (
     id serial primary key not null,
-    note text,
-    journal_entry text,
+    title text,
+    entry_type text,
+    list text,
+    mood text,
+    entry_block text,
+    tags text,
     users_id integer references users(id)
 );

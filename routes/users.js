@@ -1,28 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const { sanitizeBody } = require('express-validator');
 const User = require('../models/User');
 const randToken = require('rand-token');
 
 /* GET users listing. */
 router.get('/', async (req, res) => {
-  console.log('hi');
   const getUserData = await User.getUser(req.query.email);
   res.json(getUserData);
 });
 
 router.get('/components', async (req, res) => {
   const getComponentData = await User.getData(req.query.id, req.query.type);
-  console.log(getComponentData);
   res.json(getComponentData);
 });
 
-router.post('/registerProcess', [
-  sanitizeBody('first_name').escape(),
-  sanitizeBody('last_name').escape(),
-  sanitizeBody('email').escape(),
-  sanitizeBody('password').escape(),
-], async (req, res) => {
+router.post('/registerProcess', async (req, res) => {
 
   if ((!req.body.first_name) || (!req.body.last_name) || (!req.body.email) || (!req.body.password)) {
     console.log('some field was not entered');
@@ -45,14 +37,11 @@ router.post('/registerProcess', [
       })
     }
   } else {
-  res.json(null);
+  res.json({msg: 'invalid'});
   }
 });
 
-router.post('/loginProcess', [
-  sanitizeBody('email').escape(),
-  sanitizeBody('password').escape(),
-], async (req, res) => {
+router.post('/loginProcess', async (req, res) => {
 
   if ((!req.body.email) || (!req.body.password)) {
     console.log('some field was not entered');
@@ -75,22 +64,16 @@ router.post('/loginProcess', [
       })
     }
   } else {
-    res.json(null);
+    res.json({msg: 'invalid'});
   }
 
 });
 
-router.post('/update/newsfeed', [
-  sanitizeBody('post').escape(),
-  sanitizeBody('where').escape(),
-  sanitizeBody('whom').escape(),
-  sanitizeBody('when').escape(),
-  sanitizeBody('user_id').escape(),
-], async (req, res) => {
+router.post('/update/newsfeed', async (req, res) => {
 
   console.log(req.body);
 
-  if ((!req.body.post) || (!req.body.where) || (!req.body.whom)|| (!req.body.when) || (!req.body.user_id)) {
+  if ((!req.body.postb64) || (!req.body.whereb64) || (!req.body.whomb64)|| (!req.body.whenb64) || (!req.body.user_id)) {
     console.log('some field was not entered');
     res.json({
       msg: 'invalid'
@@ -104,10 +87,7 @@ router.post('/update/newsfeed', [
 
 });
 
-router.post('/remove/newsfeed', [
-  sanitizeBody('id').escape(),
-  sanitizeBody('user_id').escape(),
-], async (req, res) => {
+router.post('/remove/newsfeed', async (req, res) => {
 
   console.log(req.body);
 
@@ -116,16 +96,20 @@ router.post('/remove/newsfeed', [
   res.json(removeInfo);
 });
 
-router.post('/update/quotebook', [
-  sanitizeBody('quote').escape(),
-  sanitizeBody('type').escape(),
-  sanitizeBody('origin').escape(),
-  sanitizeBody('significance').escape(),
-  sanitizeBody('when_said').escape(),
-  sanitizeBody('user_id').escape(),
-], async (req, res) => {
+router.get('/connections', async (req, res) => {
+  const userDatabaseList = await User.getAllUsers();
+  res.json(userDatabaseList);
+})
 
-  if ((!req.body.quote) || (!req.body.type) || (!req.body.origin)|| (!req.body.significance) || (!req.body.when_said) || (!req.body.user_id)) {
+router.put('/update/connections', async (req, res) => {
+  const toggleFavorite = await User.toggleFavorite(req.body);
+  console.log(toggleFavorite);
+  res.json(toggleFavorite);
+});
+
+router.post('/update/quotebook', async (req, res) => {
+
+  if ((!req.body.quoteb64) || (!req.body.type) || (!req.body.originb64)|| (!req.body.significanceb64) || (!req.body.when_saidb64) || (!req.body.user_id)) {
     console.log('some field was not entered');
     res.json({
       msg: 'invalid'
@@ -139,12 +123,40 @@ router.post('/update/quotebook', [
 
 });
 
-router.post('/remove/quotebook', [
-  sanitizeBody('id').escape(),
-  sanitizeBody('user_id').escape(),
-], async (req, res) => {
+router.post('/remove/quotebook', async (req, res) => {
 
   const removeInfo = await User.removeQuote(req.body);
+
+  res.json(removeInfo);
+});
+
+router.post('/update/freewrite', async (req, res) => {
+
+  if ((!req.body.titleb64) || (!req.body.type)|| !(req.body.listb64 || req.body.moodb64) || (!req.body.entryb64) || (!req.body.tagsb64) || (!req.body.user_id)) {
+    console.log('some field was not entered');
+    res.json({
+      msg: 'invalid'
+    })
+    return;
+  }
+
+  const newInfo = await User.updateFreeWrite(req.body);
+
+  res.json(newInfo);
+
+});
+
+router.post('/remove/freewrite', async (req, res) => {
+
+  const removeInfo = await User.removeFreeWrite(req.body);
+
+  res.json(removeInfo);
+});
+
+router.post('/remove/freewrite-note-delete', async (req, res) => {
+  console.log('made it');
+
+  const removeInfo = await User.removeSticky(req.body);
 
   res.json(removeInfo);
 });
