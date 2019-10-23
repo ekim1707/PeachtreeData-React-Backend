@@ -20,5 +20,19 @@
     "morgan": "~1.9.1",
     "pg-promise": "^9.2.1",
     "rand-token": "^0.4.0"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekim1707/PeachtreeData-React-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekim1707/PeachtreeData-React-Backend/issues"
+  },
+  "homepage": "https://github.com/ekim1707/PeachtreeData-React-Backend#readme",
+  "description": ""
 }

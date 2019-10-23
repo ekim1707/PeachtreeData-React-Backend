@@ -161,4 +161,8 @@ router.post('/remove/freewrite-note-delete', async (req, res) => {
   res.json(removeInfo);
 });
 
+router.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 module.exports = router;
