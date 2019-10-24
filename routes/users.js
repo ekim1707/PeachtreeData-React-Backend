@@ -5,6 +5,7 @@ const randToken = require('rand-token');
 
 /* GET users listing. */
 router.get('/', async (req, res) => {
+  console.log('hi');
   const getUserData = await User.getUser(req.query.email);
   res.json(getUserData);
 });
