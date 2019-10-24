@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/test', function(req, res) {
+  res.json({ msg: 'test success' })
+})
+
 router.get('/react-project-forum', async (req, res) => {
   const forumData = await User.getForumData(req.body);
   console.log(forumData);
@@ -30,9 +34,5 @@ router.post('/react-project-forum', async (req, res) => {
   res.json(forumData);
 
 })
-
-router.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
 
 module.exports = router;
