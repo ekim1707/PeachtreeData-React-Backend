@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "db:reset": "dropdb peachtreedata; bash create-db.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm install --production"
   },
   "dependencies": {
     "base-64": "^0.1.0",
@@ -34,5 +35,9 @@
     "url": "https://github.com/ekim1707/PeachtreeData-React-Backend/issues"
   },
   "homepage": "https://github.com/ekim1707/PeachtreeData-React-Backend#readme",
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "12.4.0",
+    "npm": "6.12.0"
+  }
 }
