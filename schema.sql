@@ -71,5 +71,7 @@ create table freewrite (
     mood text,
     entry_block text,
     tags text,
+    datestamp text,
+    timeposted text,
     users_id integer references users(id)
 );
