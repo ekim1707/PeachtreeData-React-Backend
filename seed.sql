@@ -93,17 +93,17 @@ VALUES
     'Not sure', 2);
 
 insert into freewrite
-    (title, entry_type, list, mood, entry_block, tags, datestamp, timeposted, users_id)
+    (title, entry_type, list, mood, entry_block, tags, users_id)
 VALUES
-    ('Do dishes', 'Notes', 'Things To Do', '', 'been sitting in the sink for a couple days now', 'Tiffany', '10/19/2019', '3:00PM EST', 2),
-    ('house: "pdkingdom19"', 'Notes', 'WiFi Passwords', '', 'none', 'none', '10/19/2019', '3:00PM EST', 2),
-    ('Divine Cafe: "GreatCoffee"', 'Notes', 'WiFi Passwords', '', 'password changes frequently', 'none', '10/19/2019', '3:00PM EST', 2),
-    ('Buy orange juice', 'Notes', 'Things To Do', '', 'running low', 'Tiffany', '10/19/2019', '3:00PM EST', 2),
-    ('Finish styling edits and debugging for Portfoilio ASAP', 'Notes', 'Coding', '', 'there are a multiple errors and styling issues that need work', 'none', '10/19/2019', '3:00PM EST', 2),
-    ('Present for Eunice birthday', 'Notes', 'Things To Do', '', 'Mid November birthday, be prepared', 'Eunice', '10/19/2019', '3:00PM EST', 2),
-    ('Prestons apartment: gongnong0423', 'Notes', 'WiFi Passwords', '', 'they just moved, so it could have changed', 'Preston, Yun, Tiffany', '10/19/2019', '3:00PM EST', 2),
-    ('Buy orange juice', 'Notes', 'Things To Do', '', 'running low', 'Tiffany', '10/19/2019', '3:00PM EST', 2),
-    ('Pendergrass flea market', 'Notes', 'Upcoming trips', '', 'near Gainesville area, plan to go soon', 'Tiffany', '10/19/2019', '3:00PM EST', 2),
-    ('Give old iPad back to Dad', 'Notes', 'Important', '', 'give iPad from basement to Dad before he returns to Maryland', 'Dad', '10/19/2019', '3:00PM EST', 2),
-    ('Find good Angular Udemy', 'Notes', 'Coding', '', 'angular seems like the next best framework to learn', 'none', '10/19/2019', '3:00PM EST', 2),
-    ('Test', 'Journal', '', 'Hungry', 'Need to work on this more', 'none', '10/19/2019', '3:00PM EST', 2);
+    ('Do dishes', 'Notes', 'Things To Do', '', 'been sitting in the sink for a couple days now', 'Tiffany', 2),
+    ('house: "pdkingdom19"', 'Notes', 'WiFi Passwords', '', 'none', 'none', 2),
+    ('Divine Cafe: "GreatCoffee"', 'Notes', 'WiFi Passwords', '', 'password changes frequently', 'none', 2),
+    ('Buy orange juice', 'Notes', 'Things To Do', '', 'running low', 'Tiffany', 2),
+    ('Finish styling edits and debugging for Portfoilio ASAP', 'Notes', 'Coding', '', 'there are a multiple errors and styling issues that need work', 'none', 2),
+    ('Present for Eunice birthday', 'Notes', 'Things To Do', '', 'Mid November birthday, be prepared', 'Eunice', 2),
+    ('Prestons apartment: gongnong0423', 'Notes', 'WiFi Passwords', '', 'they just moved, so it could have changed', 'Preston, Yun, Tiffany', 2),
+    ('Buy orange juice', 'Notes', 'Things To Do', '', 'running low', 'Tiffany', 2),
+    ('Pendergrass flea market', 'Notes', 'Upcoming trips', '', 'near Gainesville area, plan to go soon', 'Tiffany', 2),
+    ('Give old iPad back to Dad', 'Notes', 'Important', '', 'give iPad from basement to Dad before he returns to Maryland', 'Dad', 2),
+    ('Find good Angular Udemy', 'Notes', 'Coding', '', 'angular seems like the next best framework to learn', 'none', 2),
+    ('Test', 'Journal', '', 'Hungry', 'Need to work on this more', 'none', 2);
